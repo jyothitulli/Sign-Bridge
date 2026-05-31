@@ -1,0 +1,12 @@
+{
+  "id": "daily",
+  "name": "Daily Conversation",
+  "description": "Common daily ASL gloss words for general communication",
+  "targetRepsPerWord": 50,
+  "words": [
+    "HELLO", "THANK", "YOU", "I", "ME", "MY", "YOUR", "NAME", "WHAT", "WHERE",
+    "WHEN", "WHY", "WHO", "HOW", "TIME", "TODAY", "TOMORROW", "YESTERDAY",
+    "HUNGRY", "TIRED", "HOT", "COLD", "FEEL", "HEADACHE", "EAT", "GO", "STORE",
+    "SCHOOL", "WORK", "WEATHER", "VERY", "FROM", "YES", "NO"
+  ]
+}

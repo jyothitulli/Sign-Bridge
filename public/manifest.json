@@ -1,0 +1,28 @@
+{
+  "name": "SignBridge — Sign Language Translator",
+  "short_name": "SignBridge",
+  "description": "Real-time sign language to natural English. Offline-first, privacy-focused.",
+  "start_url": "/translate",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f1117",
+  "theme_color": "#2dd4bf",
+  "categories": ["education", "utilities", "accessibility"],
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false
+}

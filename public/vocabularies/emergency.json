@@ -1,0 +1,10 @@
+{
+  "id": "emergency",
+  "name": "Emergency & Safety",
+  "description": "High-priority phrases for real-world emergency use",
+  "targetRepsPerWord": 50,
+  "words": [
+    "HELP", "POLICE", "HOSPITAL", "LOST", "HURT", "FIRE", "WATER", "FOOD",
+    "YES", "NO", "WHERE", "WHAT", "WHO", "HOW", "STOP", "WAIT", "GO", "COME"
+  ]
+}

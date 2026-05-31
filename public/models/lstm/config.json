@@ -1,0 +1,12 @@
+{
+  "version": "2.0.0",
+  "timesteps": 30,
+  "features": 84,
+  "featureSpec": "handVector84-shoulder-normalized",
+  "description": "Train with training/train_lstm.py — vocabulary is auto-written after training.",
+  "vocabulary": [],
+  "training": {
+    "inputShape": [30, 84],
+    "note": "Record data at /collect, export JSON, run train_lstm.py. Until model.json exists, DTW is used."
+  }
+}
