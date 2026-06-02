@@ -9,10 +9,14 @@ import type {
   QuestionType,
   FlatFeatureVector,
 } from "@/types";
-import { GrammarEngine } from "@/features/grammar/GrammarEngine";
-import { QuestionDetector } from "@/features/grammar/QuestionDetector";
-import { classifySignSequence } from "@/features/translation/signClassifier";
-import { initLstmModel, isLstmReady } from "@/services/lstm/lstmInference";
+import { FacialGrammarEngine } from "@/features/grammar/FacialGrammarEngine";
+import { recognizeContinuousGloss } from "@/features/translation/continuousGlossRecognizer";
+import { glossToEnglish } from "@/services/translation/gloss2enService";
+import {
+  initSignModel,
+  isSignModelReady,
+  getSignModelArchitecture,
+} from "@/services/sign/signModelInference";
 
 // ─── Feature Extraction ───────────────────────────────────────────────────────
 // Converts MediaPipe landmark frame → flat 1629-element feature vector
@@ -60,50 +64,79 @@ export interface TranslationInput {
   useMockData?: boolean;  // Set true until LSTM is ready
 }
 
+async function buildTranslationResult(
+  frames: LandmarkFrame[],
+  rawWords: string[],
+  classifyConfidence: number,
+  engine: TranslationResult["engine"]
+): Promise<TranslationResult> {
+  const started = Date.now();
+  const facial = FacialGrammarEngine.analyze(frames);
+
+  let words = rawWords;
+  if (facial.tags.includes("NEGATION")) {
+    words = FacialGrammarEngine.applyNegationToGloss(words);
+  }
+
+  const questionType = FacialGrammarEngine.resolveQuestionType(facial, words);
+
+  let correctedSentence = "Could not recognize signs — try again with clearer hand movements.";
+  let translationSource: TranslationResult["translationSource"];
+  if (words.length > 0) {
+    const translated = await glossToEnglish(words, questionType);
+    correctedSentence = translated.sentence;
+    translationSource = translated.source;
+  }
+
+  return {
+    id: crypto.randomUUID(),
+    rawWords: words,
+    correctedSentence,
+    questionType,
+    confidence: Math.min(0.98, classifyConfidence * (facial.confidence > 0.3 ? 1 : 0.85)),
+    timestamp: Date.now(),
+    duration: Date.now() - started,
+    engine,
+    facialTags: facial.tags,
+    translationSource,
+  };
+}
+
+/** Translate a pre-built gloss sequence (facial grammar from frames). */
+export async function translateGlossWords(
+  rawWords: string[],
+  frames: LandmarkFrame[],
+  classifyConfidence = 0.85,
+  engineOverride?: TranslationResult["engine"]
+): Promise<TranslationResult> {
+  await initSignModel();
+  const arch = getSignModelArchitecture();
+  const engine: TranslationResult["engine"] =
+    engineOverride ??
+    (isSignModelReady() ? (arch === "tcn" ? "tcn" : "lstm") : "dtw");
+  return buildTranslationResult(frames, rawWords, classifyConfidence, engine);
+}
+
 export async function translateFrames(input: TranslationInput): Promise<TranslationResult> {
-  const startTime = Date.now();
   const { frames } = input;
 
-  // ── Step 1: Detect question type from face expression ──
-  const faceResult = QuestionDetector.analyzeBuffer(frames);
+  await initSignModel();
+  const arch = getSignModelArchitecture();
+  let engine: TranslationResult["engine"] = "dtw";
+  if (isSignModelReady()) {
+    engine = arch === "tcn" ? "tcn" : "lstm";
+  }
 
-  // ── Step 2: Segment → classify each sign (LSTM per segment if trained, else DTW) ──
-  await initLstmModel();
-
-  let rawWords: string[];
-  let classifyConfidence: number;
-  let engine: "lstm" | "classifier" | "dtw" = isLstmReady() ? "lstm" : "dtw";
-
-  const classified = await classifySignSequence(frames);
-  rawWords = classified.words;
-  classifyConfidence = classified.confidence;
+  const classified = await recognizeContinuousGloss(frames);
+  let rawWords = classified.words;
+  let classifyConfidence = classified.confidence;
 
   if (rawWords.length === 0 || classifyConfidence < 0.4) {
     rawWords = [];
     classifyConfidence = 0;
   }
-  const questionType =
-    faceResult.confidence > 0.5 ? faceResult.questionType : inferQuestionType(rawWords);
 
-  // ── Step 3: Apply grammar correction ──
-  const correctedSentence =
-    rawWords.length > 0
-      ? GrammarEngine.correct(rawWords, questionType)
-      : "Could not recognize signs — try again with clearer hand movements.";
-
-  // ── Step 4: Build result ──
-  const result: TranslationResult = {
-    id: crypto.randomUUID(),
-    rawWords,
-    correctedSentence,
-    questionType,
-    confidence: Math.min(0.98, classifyConfidence * (faceResult.confidence > 0.3 ? 1 : 0.85)),
-    timestamp: Date.now(),
-    duration: Date.now() - startTime,
-    engine,
-  };
-
-  return result;
+  return buildTranslationResult(frames, rawWords, classifyConfidence, engine);
 }
 
 // ─── Reverse Mode: English → Sign Gloss ──────────────────────────────────────

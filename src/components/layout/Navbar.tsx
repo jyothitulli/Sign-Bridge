@@ -12,8 +12,6 @@ import {
   Hand,
   Menu,
   X,
-  Database,
-  GraduationCap,
   AlertTriangle,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
@@ -24,8 +22,6 @@ import { useAppStore } from "@/stores/appStore";
 
 const NAV_ITEMS = [
   { href: "/translate", label: "Translate", icon: Camera },
-  { href: "/collect",   label: "Collect",   icon: Database },
-  { href: "/practice",  label: "Practice",  icon: GraduationCap },
   { href: "/emergency",  label: "Emergency", icon: AlertTriangle },
   { href: "/reverse",   label: "Reverse",   icon: RotateCcw },
   { href: "/history",   label: "History",   icon: History },

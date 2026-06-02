@@ -1,0 +1,7 @@
+# Optional — gloss→English T5 fine-tune (GPU recommended)
+-r requirements.txt
+transformers>=4.38.0
+datasets>=2.18.0
+sentencepiece>=0.2.0
+accelerate>=0.27.0
+torch>=2.1.0

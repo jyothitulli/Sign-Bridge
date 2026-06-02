@@ -2,13 +2,14 @@
 
 import { useRef, useState, useCallback } from "react";
 import type { LandmarkFrame, TranslationResult } from "@/types";
-import { translateFrames } from "@/features/translation";
+import { translateFrames, translateGlossWords } from "@/features/translation";
+import { GlossSentenceBuffer } from "@/features/translation/GlossSentenceBuffer";
 import { QuestionDetector } from "@/features/grammar";
+import { recognizeContinuousGloss } from "@/features/translation/continuousGlossRecognizer";
 import { classifyPartialSequence } from "@/features/translation/signClassifier";
 import { getHandMotion, handsVisible } from "@/utils/gestureFeatures";
 import { useAppStore } from "@/stores/appStore";
-import { api } from "@/services/api/client";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore, authApi } from "@/stores/authStore";
 
 const MAX_FRAMES = 300;
 const MIN_FRAMES = 12;
@@ -56,6 +57,7 @@ export function useSignTranslation(): UseSignTranslationReturn {
   const lastMotionRef = useRef(0);
   const processingRef = useRef(false);
   const previewBusyRef = useRef(false);
+  const glossBufferRef = useRef(new GlossSentenceBuffer());
 
   const { addTranslation, addMessage, activeSession, startNewSession, settings } =
     useAppStore();
@@ -85,7 +87,7 @@ export function useSignTranslation(): UseSignTranslationReturn {
       try {
         const session = useAppStore.getState().activeSession;
         if (session) {
-          await api.syncPush(token, [
+          await authApi.syncPush(token, [
             {
               id: session.id,
               messages: [...session.messages, message],
@@ -109,7 +111,16 @@ export function useSignTranslation(): UseSignTranslationReturn {
       resetPreview();
 
       try {
-        const result = await translateFrames({ frames });
+        const classified = await recognizeContinuousGloss(frames);
+        glossBufferRef.current.append(classified.words);
+        const mergedWords = glossBufferRef.current.getWords();
+
+        const result =
+          mergedWords.length > 0
+            ? await translateGlossWords(mergedWords, frames, classified.confidence)
+            : await translateFrames({ frames });
+
+        glossBufferRef.current.clear();
 
         setCurrentResult(result);
         setRecentResults((prev) => [result, ...prev].slice(0, 10));

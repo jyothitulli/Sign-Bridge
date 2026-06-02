@@ -148,7 +148,7 @@ def extract_clip_frames(video_path: Path, start_frame: int, end_frame: int, min_
 def main():
     parser = argparse.ArgumentParser(description="WLASL → SignBridge training JSON")
     parser.add_argument("--wlasl-json", default="data/WLASL_v0.3.json")
-    parser.add_argument("--videos-dir", default="data/videos")
+    parser.add_argument("--videos-dir", default="data/kaggle")
     parser.add_argument("--vocabulary", default="../public/vocabularies/daily.json")
     parser.add_argument("--output", default="exports/wlasl_prepared.json")
     parser.add_argument("--max-clips-per-word", type=int, default=40)
@@ -176,7 +176,7 @@ def main():
         print(f"Missing videos folder: {videos_dir}")
         print("\nDownload WLASL videos (see TRAINING_NO_RECORDING.md):")
         print("  Kaggle: https://www.kaggle.com/datasets/risangbaskoro/wlasl-processed")
-        print("  Unzip so .mp4 files are under data/videos/")
+        print("  Unzip so .mp4 files are under data/kaggle/  (npm run download:wlasl)")
         sys.exit(1)
 
     vocabulary = load_vocabulary(args.vocabulary)

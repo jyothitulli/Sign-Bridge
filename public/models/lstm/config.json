@@ -1,12 +1,52 @@
 {
-  "version": "2.0.0",
+  "version": "3.0.0",
+  "architecture": "tcn",
   "timesteps": 30,
   "features": 84,
   "featureSpec": "handVector84-shoulder-normalized",
-  "description": "Train with training/train_lstm.py — vocabulary is auto-written after training.",
-  "vocabulary": [],
+  "description": "Trained TCN \u2014 per-segment word classification",
+  "vocabulary": [
+    "COLD",
+    "EAT",
+    "FEEL",
+    "FROM",
+    "GO",
+    "HEADACHE",
+    "HELLO",
+    "HOT",
+    "HOW",
+    "HUNGRY",
+    "I",
+    "ME",
+    "MY",
+    "NAME",
+    "NO",
+    "SCHOOL",
+    "STORE",
+    "THANK",
+    "TIME",
+    "TIRED",
+    "TODAY",
+    "TOMORROW",
+    "VERY",
+    "WEATHER",
+    "WHAT",
+    "WHEN",
+    "WHERE",
+    "WHO",
+    "WHY",
+    "YES",
+    "YESTERDAY",
+    "YOU",
+    "YOUR"
+  ],
   "training": {
-    "inputShape": [30, 84],
-    "note": "Record data at /collect, export JSON, run train_lstm.py. Until model.json exists, DTW is used."
+    "samples": 0,
+    "templates": 33,
+    "valAccuracy": 0.1818,
+    "inputShape": [
+      30,
+      84
+    ]
   }
 }

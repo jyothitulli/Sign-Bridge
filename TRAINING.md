@@ -73,13 +73,38 @@ DTW + built-in templates are fallbacks until `public/models/lstm/model.json` exi
 **Goal:** Replace synthetic DTW with your LSTM.
 
 ```powershell
+# From project root (fixes tensorflowjs / tf_keras / decision-forests on Python 3.13):
+npm run setup:training
+# Verify: python -c "import tensorflow; import tensorflowjs; print('OK')"
+
+# Or: python training/setup_env.py
+# Python 3.11 only: python training/setup_env.py --legacy
+
 cd signbridge\training
-pip install -r requirements.txt
 
 # If multiple exports from different devices:
 python merge_datasets.py export1.json export2.json -o exports\merged.json
 
 python train_lstm.py --data exports\merged.json --output ..\public\models\lstm --epochs 60
+
+# Or TCN (recommended — set architecture: "tcn" in config.json):
+python train_tcn.py --data exports\merged.json --output ..\public\models\lstm --epochs 80
+# npm run train:tcn
+
+### Gloss → English (sentence translation)
+
+```bash
+npm run train:gloss2en
+# With How2Sign (after download):
+python training/prepare_gloss2en.py --how2sign-gloss-dir data/how2sign/gloss --how2sign-en-csv data/how2sign/en.csv
+python training/build_gloss2en_index.py
+# Optional T5 fine-tune (GPU):
+pip install -r training/requirements-ml.txt
+python training/train_gloss2en.py --data training/exports/gloss2en_train.jsonl
+
+# Quantize sign classifier for mobile:
+npm run export:tfjs
+```
 python evaluate_model.py --data exports\merged.json --model ..\public\models\lstm
 ```
 

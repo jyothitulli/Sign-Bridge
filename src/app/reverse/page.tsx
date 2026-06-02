@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
+import { initEn2GlossIndex } from "@/services/translation/en2glossService";
 import { motion } from "framer-motion";
 import { RotateCcw, Send, Sparkles } from "lucide-react";
 import { useSentenceToSign } from "@/hooks/useSentenceToSign";
@@ -34,6 +35,10 @@ export default function ReversePage() {
 
   const { settings, updateSettings } = useAppStore();
   const isPlaying = playbackState === "playing";
+
+  useEffect(() => {
+    void initEn2GlossIndex();
+  }, []);
 
   const handleSubmit = useCallback(
     (e?: React.FormEvent) => {

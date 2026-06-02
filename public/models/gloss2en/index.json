@@ -1,0 +1,143 @@
+{
+  "version": "1.1.0",
+  "count": 15,
+  "entries": {
+    "YOU NAME WHAT": {
+      "english": "What is your name?",
+      "questionType": "WH"
+    },
+    "YOU EAT WHAT": {
+      "english": "What did you eat?",
+      "questionType": "WH"
+    },
+    "TODAY WEATHER HOT": {
+      "english": "Today the weather is hot.",
+      "questionType": "STATEMENT"
+    },
+    "YESTERDAY I GO STORE": {
+      "english": "Yesterday I went to the store.",
+      "questionType": "STATEMENT"
+    },
+    "YOU HUNGRY": {
+      "english": "Are you hungry?",
+      "questionType": "YES_NO"
+    },
+    "I FEEL HEADACHE": {
+      "english": "I feel a headache.",
+      "questionType": "STATEMENT"
+    },
+    "TIME WHAT": {
+      "english": "What is the time?",
+      "questionType": "WH"
+    },
+    "I TIRED VERY": {
+      "english": "I am very tired.",
+      "questionType": "STATEMENT"
+    },
+    "WHERE YOU GO": {
+      "english": "Where did you go?",
+      "questionType": "WH"
+    },
+    "I WANT WATER": {
+      "english": "I want water.",
+      "questionType": "STATEMENT"
+    },
+    "YOU UNDERSTAND ME": {
+      "english": "Do you understand me?",
+      "questionType": "YES_NO"
+    },
+    "TOMORROW I GO SCHOOL": {
+      "english": "Tomorrow I will go to school.",
+      "questionType": "STATEMENT"
+    },
+    "I NOT KNOW": {
+      "english": "I don't know.",
+      "questionType": "STATEMENT"
+    },
+    "HOW YOU FEEL": {
+      "english": "How do you feel?",
+      "questionType": "WH"
+    },
+    "I NEED HELP": {
+      "english": "I need help.",
+      "questionType": "STATEMENT"
+    }
+  },
+  "reverse": {
+    "what is your name": [
+      "YOU",
+      "NAME",
+      "WHAT"
+    ],
+    "what did you eat": [
+      "YOU",
+      "EAT",
+      "WHAT"
+    ],
+    "today the weather is hot": [
+      "TODAY",
+      "WEATHER",
+      "HOT"
+    ],
+    "yesterday i went to the store": [
+      "YESTERDAY",
+      "I",
+      "GO",
+      "STORE"
+    ],
+    "are you hungry": [
+      "YOU",
+      "HUNGRY"
+    ],
+    "i feel a headache": [
+      "I",
+      "FEEL",
+      "HEADACHE"
+    ],
+    "what is the time": [
+      "TIME",
+      "WHAT"
+    ],
+    "i am very tired": [
+      "I",
+      "TIRED",
+      "VERY"
+    ],
+    "where did you go": [
+      "WHERE",
+      "YOU",
+      "GO"
+    ],
+    "i want water": [
+      "I",
+      "WANT",
+      "WATER"
+    ],
+    "do you understand me": [
+      "YOU",
+      "UNDERSTAND",
+      "ME"
+    ],
+    "tomorrow i will go to school": [
+      "TOMORROW",
+      "I",
+      "GO",
+      "SCHOOL"
+    ],
+    "i don't know": [
+      "I",
+      "NOT",
+      "KNOW"
+    ],
+    "how do you feel": [
+      "HOW",
+      "YOU",
+      "FEEL"
+    ],
+    "i need help": [
+      "I",
+      "NEED",
+      "HELP"
+    ]
+  }
+}

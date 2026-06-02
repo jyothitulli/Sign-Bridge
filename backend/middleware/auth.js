@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import { verifyAccessToken } from "../services/tokens.js";
 
 export function authMiddleware(req, res, next) {
   const header = req.headers.authorization;
@@ -8,7 +8,7 @@ export function authMiddleware(req, res, next) {
 
   const token = header.slice(7);
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const payload = verifyAccessToken(token);
     req.userId = payload.sub;
     req.userEmail = payload.email;
     next();

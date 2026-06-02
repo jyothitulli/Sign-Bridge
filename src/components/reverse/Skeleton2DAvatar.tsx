@@ -44,13 +44,18 @@ export function Skeleton2DAvatar({
   const resolvePose = useCallback((): SkeletonPose => {
     if (!currentWord) return NEUTRAL_POSE;
     const anim = getSignAnimation(currentWord);
-    if (!anim || anim.keyframes.length < 2) return NEUTRAL_POSE;
+    const frames = anim?.keyframes ?? [];
+    if (frames.length < 2) return NEUTRAL_POSE;
 
-    const segments = anim.keyframes.length - 1;
-    const scaled = frameProgress * segments;
+    const segments = frames.length - 1;
+    const scaled = Math.max(0, Math.min(segments, frameProgress * segments));
     const idx = Math.min(Math.floor(scaled), segments - 1);
+    const from = frames[idx];
+    const to = frames[idx + 1];
+    if (!from || !to) return NEUTRAL_POSE;
+
     const t = scaled - idx;
-    return interpolatePose(anim.keyframes[idx], anim.keyframes[idx + 1], t);
+    return interpolatePose(from, to, t);
   }, [currentWord, frameProgress]);
 
   const draw = useCallback(() => {

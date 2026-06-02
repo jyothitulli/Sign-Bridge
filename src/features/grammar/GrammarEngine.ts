@@ -73,6 +73,21 @@ function addPunctuation(sentence: string, questionType: QuestionType): string {
 
 const GRAMMAR_RULES: GrammarRule[] = [
 
+  // ── Negation: NOT after subject → don't / didn't / not ─────────────────────
+  {
+    name: "negation_not",
+    priority: 0,
+    condition: (words) => words.includes("NOT"),
+    transform: (words) => {
+      const out = words.filter((w) => w !== "NOT");
+      const subject = out.find((w) => ["I", "YOU", "HE", "SHE", "WE", "THEY", "IT"].includes(w));
+      if (subject === "I") out.splice(out.indexOf("I") + 1, 0, "DON'T");
+      else if (subject) out.splice(out.indexOf(subject) + 1, 0, "DON'T");
+      else out.unshift("DON'T");
+      return out;
+    },
+  },
+
   // ── Rule 1: Extract and move time markers to front ──────────────────────────
   {
     name: "time_marker_to_front",

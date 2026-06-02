@@ -233,9 +233,6 @@ export default function TranslatePage() {
             <li>Sign one sentence, then hold still for ~1 second</li>
             <li>Pause briefly between individual signs in a sentence</li>
             <li>Keep hands visible and well-lit for best accuracy</li>
-            <li>
-              Use <strong>Practice</strong> mode to train personal templates — big accuracy boost
-            </li>
           </ul>
         </div>
       </div>

@@ -9,7 +9,20 @@
     "lint": "eslint",
     "backend": "npm run dev --prefix backend",
     "backend:install": "npm install --prefix backend",
-    "train:public": "python training/train_public.py --download-json"
+    "smoke": "node scripts/smoke-check.mjs",
+    "train:demo": "python training/export_builtin_templates.py && python training/train_tcn.py --data training/exports/builtin_demo.json --output public/models/lstm --epochs 50 --min-samples 1",
+    "download:wlasl": "python training/download_wlasl.py",
+    "train:wlasl:json": "python training/prepare_from_wlasl.py --download-json --videos-dir data/kaggle",
+    "train:public": "python training/train_public.py --download-json --videos-dir training/data/kaggle",
+    "train:wlasl": "python training/train_public.py --download-json --videos-dir training/data/kaggle",
+    "train:tcn": "python training/train_tcn.py --data training/exports/merged.json --output public/models/lstm",
+    "train:lstm": "python training/train_lstm.py --data training/exports/merged.json --output public/models/lstm",
+    "train:gloss2en": "python training/prepare_gloss2en.py && python training/build_gloss2en_index.py",
+    "train:continuous": "python training/prepare_continuous_gloss.py && python training/train_gloss_ctc.py",
+    "train:continuous:prepare": "python training/prepare_continuous_gloss.py",
+    "setup:training": "python training/setup_env.py",
+    "setup:training:base": "python -m pip install -r training/requirements-base.txt",
+    "export:tfjs": "python training/export_tfjs_quantized.py --keras-dir public/models/lstm --output public/models/lstm --quantize uint8"
   },
   "dependencies": {
     "@mediapipe/camera_utils": "^0.3.1675466862",
@@ -47,6 +60,6 @@
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "5.9.3"
   }
 }

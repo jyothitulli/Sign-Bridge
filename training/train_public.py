@@ -28,7 +28,7 @@ def run(cmd: list[str]) -> None:
 def main():
     parser = argparse.ArgumentParser(description="Train SignBridge from WLASL (no webcam recording)")
     parser.add_argument("--wlasl-json", default="data/WLASL_v0.3.json")
-    parser.add_argument("--videos-dir", default="data/videos")
+    parser.add_argument("--videos-dir", default="data/kaggle")
     parser.add_argument("--vocabulary", default="../public/vocabularies/daily.json")
     parser.add_argument("--data", default="exports/wlasl_prepared.json")
     parser.add_argument("--output", default="../public/models/lstm")
@@ -96,13 +96,13 @@ See TRAINING_NO_RECORDING.md for full steps.
     run(
         [
             sys.executable,
-            "train_lstm.py",
+            "train_tcn.py",
             "--data",
             args.data,
             "--output",
             args.output,
             "--epochs",
-            str(args.epochs),
+            str(max(args.epochs, 80)),
         ]
     )
 
@@ -121,7 +121,7 @@ See TRAINING_NO_RECORDING.md for full steps.
     print("SUCCESS")
     print("=" * 60)
     print("Restart the app:  npm run dev")
-    print("Open /translate — badge should show LSTM")
+    print("Open /translate — badge should show TCN")
     print("\nNote: WLASL signers differ from you. For best live accuracy,")
     print("add 10–20 reps of YOUR signing in /collect and merge + retrain.")
 

@@ -21,21 +21,33 @@ export const MEDIAPIPE_FILES = [
   "face_detection_short_range.tflite",
 ];
 
-export const LSTM_FILES = ["/models/lstm/config.json", "/models/lstm/model.json"];
+/** Sign classifier bundle (config always; weights after `npm run train:demo` / `train:wlasl`) */
+export const LSTM_FILES = [
+  "/models/lstm/config.json",
+  "/models/lstm/model.json",
+  "/models/lstm/group1-shard1of1.bin",
+];
 
-export const APP_SHELL = ["/", "/translate", "/collect", "/practice", "/reverse", "/history", "/settings", "/manifest.json"];
+export const GLOSS2EN_FILES = ["/models/gloss2en/index.json"];
+
+export const APP_SHELL = ["/", "/translate", "/reverse", "/history", "/settings", "/manifest.json"];
 
 export function mediapipeUrl(file: string): string {
   return `${MEDIAPIPE_CDN}${file}`;
 }
 
-export function getAllCacheUrls(origin: string): { url: string; group: "mediapipe" | "lstm" | "app" }[] {
+export function getAllCacheUrls(
+  origin: string
+): { url: string; group: "mediapipe" | "lstm" | "app" }[] {
   const items: { url: string; group: "mediapipe" | "lstm" | "app" }[] = [];
 
   for (const file of MEDIAPIPE_FILES) {
     items.push({ url: mediapipeUrl(file), group: "mediapipe" });
   }
   for (const path of LSTM_FILES) {
+    items.push({ url: `${origin}${path}`, group: "lstm" });
+  }
+  for (const path of GLOSS2EN_FILES) {
     items.push({ url: `${origin}${path}`, group: "lstm" });
   }
   for (const path of APP_SHELL) {

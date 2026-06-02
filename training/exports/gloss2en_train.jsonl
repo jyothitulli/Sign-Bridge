@@ -1,0 +1,15 @@
+{"gloss": ["YOU", "NAME", "WHAT"], "english": "What is your name?", "questionType": "WH"}
+{"gloss": ["YOU", "EAT", "WHAT"], "english": "What did you eat?", "questionType": "WH"}
+{"gloss": ["TODAY", "WEATHER", "HOT"], "english": "Today the weather is hot.", "questionType": "STATEMENT"}
+{"gloss": ["YESTERDAY", "I", "GO", "STORE"], "english": "Yesterday I went to the store.", "questionType": "STATEMENT"}
+{"gloss": ["YOU", "HUNGRY"], "english": "Are you hungry?", "questionType": "YES_NO"}
+{"gloss": ["I", "FEEL", "HEADACHE"], "english": "I feel a headache.", "questionType": "STATEMENT"}
+{"gloss": ["TIME", "WHAT"], "english": "What is the time?", "questionType": "WH"}
+{"gloss": ["I", "TIRED", "VERY"], "english": "I am very tired.", "questionType": "STATEMENT"}
+{"gloss": ["WHERE", "YOU", "GO"], "english": "Where did you go?", "questionType": "WH"}
+{"gloss": ["I", "WANT", "WATER"], "english": "I want water.", "questionType": "STATEMENT"}
+{"gloss": ["YOU", "UNDERSTAND", "ME"], "english": "Do you understand me?", "questionType": "YES_NO"}
+{"gloss": ["TOMORROW", "I", "GO", "SCHOOL"], "english": "Tomorrow I will go to school.", "questionType": "STATEMENT"}
+{"gloss": ["I", "NOT", "KNOW"], "english": "I don't know.", "questionType": "STATEMENT"}
+{"gloss": ["HOW", "YOU", "FEEL"], "english": "How do you feel?", "questionType": "WH"}
+{"gloss": ["I", "NEED", "HELP"], "english": "I need help.", "questionType": "STATEMENT"}

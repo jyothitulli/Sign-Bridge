@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tensorflow-decision-forests-stub"
+version = "0.0.1"
+description = "No-op stub so tensorflowjs imports on TF 2.20+ without real tensorflow-decision-forests"
+readme = "README.md"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -5,7 +5,9 @@ import {
   type DownloadProgress,
 } from "@/services/storage/modelCache";
 import { getAllCacheUrls } from "@/config/modelManifest";
-import { initLstmModel } from "@/services/lstm/lstmInference";
+import { initSignModel } from "@/services/sign/signModelInference";
+import { initGloss2EnIndex } from "@/services/translation/gloss2enService";
+import { initEn2GlossIndex } from "@/services/translation/en2glossService";
 
 type StatusSetter = (status: "not_loaded" | "loading" | "ready" | "error") => void;
 type ProgressSetter = (p: Partial<{ mediapipe: number; lstm: number; overall: number }>) => void;
@@ -22,8 +24,12 @@ export async function bootstrapOfflineModels(
   if (cached) {
     setMediapipe("ready");
     setProgress({ mediapipe: 100, lstm: 100, overall: 100 });
-    const lstm = await initLstmModel();
-    setLstm(lstm === "ready" ? "ready" : "not_loaded");
+    const [signModel] = await Promise.all([
+      initSignModel(),
+      initGloss2EnIndex(),
+      initEn2GlossIndex(),
+    ]);
+    setLstm(signModel === "ready" ? "ready" : "not_loaded");
     return "ready";
   }
 
@@ -39,8 +45,12 @@ export async function bootstrapOfflineModels(
   });
 
   setMediapipe("ready");
-  const lstm = await initLstmModel();
-  setLstm(lstm === "ready" ? "ready" : "not_loaded");
+  const [signModel] = await Promise.all([
+    initSignModel(),
+    initGloss2EnIndex(),
+    initEn2GlossIndex(),
+  ]);
+  setLstm(signModel === "ready" ? "ready" : "not_loaded");
   return "downloaded";
 }
 

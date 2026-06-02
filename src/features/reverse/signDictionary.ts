@@ -236,6 +236,46 @@ export const SIGN_DICTIONARY: Record<string, SignPoseSequence> = {
     NEUTRAL_POSE,
     pose({ rightWrist: { x: 0.48, y: 0.32 }, rightElbow: { x: 0.5, y: 0.28 } }),
   ]),
+  WANT: seq("WANT", [
+    NEUTRAL_POSE,
+    pose({ rightWrist: { x: 0.55, y: 0.38 }, leftWrist: { x: 0.45, y: 0.4 } }),
+  ]),
+  NEED: seq("NEED", [
+    NEUTRAL_POSE,
+    pose({ rightWrist: { x: 0.52, y: 0.35 }, leftWrist: { x: 0.48, y: 0.35 } }),
+  ]),
+  HELP: seq("HELP", [
+    NEUTRAL_POSE,
+    pose({ rightWrist: { x: 0.5, y: 0.3 }, leftWrist: { x: 0.5, y: 0.42 } }),
+  ]),
+  WATER: seq("WATER", [
+    NEUTRAL_POSE,
+    pose({ rightWrist: { x: 0.52, y: 0.38 }, leftWrist: { x: 0.48, y: 0.38 } }),
+  ]),
+  KNOW: seq("KNOW", [
+    NEUTRAL_POSE,
+    pose({ rightWrist: { x: 0.55, y: 0.28 }, head: { x: 0.5, y: 0.11 } }),
+  ]),
+  UNDERSTAND: seq("UNDERSTAND", [
+    NEUTRAL_POSE,
+    pose({
+      rightWrist: { x: 0.58, y: 0.35 },
+      leftWrist: { x: 0.42, y: 0.35 },
+      head: { x: 0.5, y: 0.11 },
+    }),
+  ]),
+  WHICH: seq("WHICH", [
+    NEUTRAL_POSE,
+    pose({ leftWrist: { x: 0.38, y: 0.4 }, rightWrist: { x: 0.62, y: 0.4 } }),
+  ]),
+  WORK: seq("WORK", [
+    NEUTRAL_POSE,
+    pose({
+      leftWrist: { x: 0.42, y: 0.38 },
+      rightWrist: { x: 0.58, y: 0.38 },
+      rightElbow: { x: 0.6, y: 0.3 },
+    }),
+  ]),
 };
 
 export function getSignAnimation(word: string): SignPoseSequence | null {
@@ -243,15 +283,30 @@ export function getSignAnimation(word: string): SignPoseSequence | null {
   return SIGN_DICTIONARY[key] ?? null;
 }
 
-export function interpolatePose(a: SkeletonPose, b: SkeletonPose, t: number): SkeletonPose {
+/** Ensure every joint exists (guards partial/undefined poses during playback). */
+export function normalizePose(p: SkeletonPose | Partial<SkeletonPose> | null | undefined): SkeletonPose {
+  if (!p) return { ...NEUTRAL_POSE };
+  return { ...NEUTRAL_POSE, ...p };
+}
+
+export function interpolatePose(
+  a: SkeletonPose | null | undefined,
+  b: SkeletonPose | null | undefined,
+  t: number
+): SkeletonPose {
+  const poseA = normalizePose(a);
+  const poseB = normalizePose(b);
+  const u = Math.max(0, Math.min(1, t));
+
   const lerp = (p: SkeletonJoint, q: SkeletonJoint) => ({
-    x: p.x + (q.x - p.x) * t,
-    y: p.y + (q.y - p.y) * t,
+    x: p.x + (q.x - p.x) * u,
+    y: p.y + (q.y - p.y) * u,
   });
+
   const keys = Object.keys(NEUTRAL_POSE) as (keyof SkeletonPose)[];
   const result = {} as SkeletonPose;
   for (const k of keys) {
-    result[k] = lerp(a[k], b[k]);
+    result[k] = lerp(poseA[k], poseB[k]);
   }
   return result;
 }

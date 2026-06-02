@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Camera,
   CameraOff,
-  ChevronLeft,
+  ChevronLeft, 
   ChevronRight,
   Download,
   Database,

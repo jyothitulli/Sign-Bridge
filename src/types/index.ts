@@ -27,6 +27,14 @@ export interface FlatFeatureVector {
 
 export type QuestionType = "WH" | "YES_NO" | "STATEMENT";
 
+export type FacialGrammarTag =
+  | "YES_NO_Q"
+  | "WH_Q"
+  | "NEGATION"
+  | "TOPIC"
+  | "RHETORICAL"
+  | "NEUTRAL";
+
 export interface FaceExpressionResult {
   questionType: QuestionType;
   eyebrowHeight: number;   // positive = raised, negative = furrowed
@@ -50,7 +58,9 @@ export interface TranslationResult {
   confidence: number;
   timestamp: number;
   duration: number;             // ms
-  engine?: "lstm" | "classifier" | "dtw";
+  engine?: "lstm" | "tcn" | "classifier" | "dtw";
+  facialTags?: FacialGrammarTag[];
+  translationSource?: "index" | "grammar" | "hybrid";
 }
 
 // ─── Grammar Engine ──────────────────────────────────────────────────────────

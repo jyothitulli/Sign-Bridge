@@ -38,9 +38,8 @@ pip install -r requirements.txt
 4. Move token to: `C:\Users\YOURNAME\.kaggle\kaggle.json`
 
 ```powershell
-cd c:\Users\preet\webspace\Sign-Bridge\signbridge\training
-mkdir data\kaggle -Force
-kaggle datasets download -d risangbaskoro/wlasl-processed -p data\kaggle --unzip
+# From project root (after kaggle.json is in place):
+npm run download:wlasl
 ```
 
 If `kaggle` is not in PATH, use full path or run from Python environment where it was installed.
@@ -50,8 +49,8 @@ If `kaggle` is not in PATH, use full path or run from Python environment where i
 Point `--videos-dir` at the folder that contains `.mp4` files (search inside `data\kaggle` if unsure):
 
 ```powershell
-# Auto-download WLASL JSON + extract landmarks + train LSTM
-python train_public.py --videos-dir data\kaggle --download-json --epochs 60
+# Auto-download WLASL JSON + extract landmarks + train TCN
+npm run train:wlasl
 ```
 
 ### 4. Run the app

@@ -111,7 +111,13 @@ export function SentenceOutput({
                 </span>
                 {result.engine && (
                   <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-muted text-muted-foreground">
-                    {result.engine === "lstm" ? "LSTM" : result.engine === "dtw" ? "DTW" : "Classifier"}
+                    {result.engine === "tcn"
+                      ? "TCN"
+                      : result.engine === "lstm"
+                        ? "LSTM"
+                        : result.engine === "dtw"
+                          ? "DTW"
+                          : "Classifier"}
                   </span>
                 )}
               </div>

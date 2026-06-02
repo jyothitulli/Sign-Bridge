@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jax-import-stub"
+version = "0.0.1"
+description = "Minimal jax namespace stub for tensorflowjs import (Keras export only)"
+readme = "README.md"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -6,7 +6,11 @@ import { frameToHandVector, resampleSequence } from "@/utils/handVector";
 import { dtwBestMatch } from "@/features/translation/dtw";
 import { getAllBuiltinTemplates, type SignTemplate } from "@/features/translation/signTemplates";
 import { getUserTemplatesAsSignTemplates } from "@/services/storage/signTrainingStore";
-import { predictSegmentWithLstm, isLstmReady, initLstmModel } from "@/services/lstm/lstmInference";
+import {
+  predictSegmentWithSignModel,
+  isSignModelReady,
+  initSignModel,
+} from "@/services/sign/signModelInference";
 
 const TEMPLATE_LEN = 12;
 const MIN_SEGMENT_FRAMES = 8;
@@ -67,11 +71,11 @@ export function segmentSignFrames(frames: LandmarkFrame[]): LandmarkFrame[][] {
 }
 
 async function classifySegment(frames: LandmarkFrame[]): Promise<{ word: string; confidence: number } | null> {
-  await initLstmModel();
+  await initSignModel();
 
-  if (isLstmReady()) {
-    const lstm = await predictSegmentWithLstm(frames);
-    if (lstm) return lstm;
+  if (isSignModelReady()) {
+    const neural = await predictSegmentWithSignModel(frames);
+    if (neural) return neural;
   }
 
   const rawVectors = frames

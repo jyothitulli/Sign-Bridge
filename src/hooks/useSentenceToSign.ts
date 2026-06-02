@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
-import { englishToGloss } from "@/features/reverse/ReverseGrammarEngine";
+import { englishToGlossHybrid } from "@/services/translation/en2glossService";
 import { getSignAnimation } from "@/features/reverse/signDictionary";
 import type { SignPoseSequence } from "@/features/reverse/signDictionary";
 import { useAppStore } from "@/stores/appStore";
@@ -54,12 +54,12 @@ export function useSentenceToSign(): UseSentenceToSignReturn {
   }, []);
 
   const submitSentence = useCallback(
-    (sentence?: string) => {
+    async (sentence?: string) => {
       const text = (sentence ?? inputSentence).trim();
       if (!text) return;
 
       stopPlaybackInternal();
-      const gloss = englishToGloss(text);
+      const { gloss } = await englishToGlossHybrid(text);
       setSignGloss(gloss);
       setInputSentence(text);
 
